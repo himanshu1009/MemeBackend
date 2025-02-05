@@ -4,6 +4,7 @@ const { signUpController, otpController } = require('../../controllers');
 const { validateAuthRequest } = require('../../middleware');
 
 router.post('/signup',validateAuthRequest.validateAuthRequest, signUpController.signUp);
+router.post('/signup/send-otp', signUpController.sendOTP);
 router.post('/signin',validateAuthRequest.validateAuthRequest, signUpController.signIn);
 router.post('/forgot-password', otpController.ForgotPasswordSendOTP);
 router.put('/reset-password', signUpController.resetPassword);
