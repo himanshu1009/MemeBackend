@@ -53,9 +53,9 @@ class CrudRepository {
         }
     }
 
-    async getAll() {
+    async getAll(query={}) {
         try {
-            const response = await this.model.find({});
+            const response = await this.model.find(query);
             return response;
         } catch (error) {
             throw new AppError(
