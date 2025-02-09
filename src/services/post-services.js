@@ -1,8 +1,9 @@
-const { PostRepository } = require("../repositories");
+const { PostRepository,UserRepository } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
 const { StatusCodes } = require("http-status-codes");
 
 const PostRepo = new PostRepository();
+const UserRepo = new UserRepository();
 
 async function createPost(data) {
     try {
@@ -21,7 +22,11 @@ async function createPost(data) {
 async function getAllPosts() {
     try {
         const posts = await PostRepo.getAll();
-        return posts;
+        const updatePost = await Promise.all(posts.map(async (post) => {
+            const {name, avatar} = await UserRepo.get(post.User);            
+            return {...post._doc, User: {name, avatar}};
+        }));
+        return updatePost;
     } catch (error) {
         throw new AppError(
             "Not able to get the resource",
@@ -31,8 +36,11 @@ async function getAllPosts() {
 }
 async function getPostById(id) {
     try {
-        const post = await PostRepo.get(id);
-        return post;
+        const post = await PostRepo.getPostById(id);
+        console.log(post);
+        
+        const {avatar, name} = await UserRepo.get(post.User);
+        return {...post._doc, User: {name, avatar}};
     } catch (error) {
         throw new AppError(
             "Not able to get the resource",
