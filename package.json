@@ -19,6 +19,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.6",
     "nodemailer": "^6.10.0",
-    "otp-generator": "^4.0.1"
+    "otp-generator": "^4.0.1",
+    "random-avatar-generator": "^2.0.0",
+    "random-profile-generator": "^2.3.0"
   }
 }

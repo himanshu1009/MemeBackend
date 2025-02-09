@@ -6,6 +6,8 @@ const  AppError  = require("../utils/errors/app-error");
 const createPost = async (req, res) => {
     try {
         const { Title, Caption,Image } = req.body;
+        console.log(req.body);
+        
         const post = await Postservice.createPost({ Title, Caption,Image, User: req.user.userId });
         SuccessResponse.data = post;
         return res.status(StatusCodes.CREATED).json(SuccessResponse);

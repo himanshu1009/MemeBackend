@@ -1,11 +1,14 @@
 const dotenv=require('dotenv');
 dotenv.config();
+const cors=require('cors');
 const express = require('express')
 const apiroutes=require('./routes')
 const {ServerConfig,dbConfig}=require('./config');
 const app = express();
 const mongoose = require('mongoose');
 
+// Enable CORS
+app.use(cors());
 // Connect to MongoDB
 mongoose.connect(dbConfig.MONGODB_URI, dbConfig.options)
     .then(() => console.log('MongoDB connected successfully'))
