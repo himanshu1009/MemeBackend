@@ -17,6 +17,21 @@ const getUserById = async (req, res) => {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
+const getUserByAuth = async (req, res) => {
+    try {
+        const user = await Userservice.getUserByAuth(req.user);
+        if (!user) {
+            throw new AppError("User not found", StatusCodes.NOT_FOUND);
+        }
+        SuccessResponse.data = user;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    } catch (error) {
+        console.log(error.message);
+        ErrorResponse.error = error.message;
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    }
+}
 module.exports = {
-    getUserById
+    getUserById,
+    getUserByAuth
 }
