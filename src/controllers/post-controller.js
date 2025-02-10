@@ -2,6 +2,8 @@ const { SuccessResponse, ErrorResponse } = require("../utils/common");
 const { Postservice } = require("../services");
 const { StatusCodes } = require("http-status-codes");
 const  AppError  = require("../utils/errors/app-error");
+const {PostRepository} = require("../repositories");
+const postRepo = new PostRepository();
 
 const createPost = async (req, res) => {
     try {
@@ -84,15 +86,19 @@ const deletePost = async (req, res) => {
 }
 const UpvotePost = async (req, res) => {
     try {
-        const post = await Postservice.getPostById(req.params.id);
+        
+        const post = await postRepo.get(req.params.id);
         if (!post) {
             throw new AppError("Post not found", StatusCodes.NOT_FOUND);
         }
         if (post.Upvotes.includes(req.user.userId)) {
-            throw new AppError("Post already liked", StatusCodes.BAD_REQUEST);
+            post.Upvotes.remove(req.user.userId);
+            await post.save();
         }
-        post.Upvotes.push(req.user.userId);
-        await post.save();
+        else{
+            post.Upvotes.push(req.user.userId);
+            await post.save();
+        }
         SuccessResponse.data = post;
         return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {

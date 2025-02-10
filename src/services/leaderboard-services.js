@@ -7,7 +7,7 @@ const PostRepo = new PostRepository();
 const getTopN = async (number) => {
     try {
         const posts = await PostRepo.getAll();
-        posts.sort((a, b) => b.Upvotes.lenght - a.Upvotes.lenght);
+        posts.sort((a, b) => b.Upvotes.length - a.Upvotes.length);
         posts.splice(number);
         const topN= posts.map((post,index) => {
             return {

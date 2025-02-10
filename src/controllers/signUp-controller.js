@@ -5,7 +5,9 @@ const { SignUpRepository } = require("../repositories");
 const  AppError  = require("../utils/errors/app-error");
 const { OTP,User } = require("../models");
 const otpGenerator = require("otp-generator");
-
+const pg = require('random-profile-generator')
+const AvatarGenerator = require('random-avatar-generator')
+const generator = new AvatarGenerator.AvatarGenerator();
 const signUpRepository = new SignUpRepository();
 const signUp = async (req, res) => {
     try {
@@ -37,6 +39,8 @@ const signUp = async (req, res) => {
         OTP.deleteMany({email:email}).then((result)=>console.log(result));
         
         const response = await SignUpService.signUp({
+            name: pg.name(),
+            avatar: generator.generateRandomAvatar(),
             email,
             password,
             otp
@@ -54,7 +58,7 @@ const sendOTP = async (req, res) => {
     try {
       const { email } = req.body;
       if(!email.endsWith('@nith.ac.in') ){
-        ErrorResponse.error = new AppError('Please enter a valid NIT Hamirpur email', StatusCodes.BAD_REQUEST);
+        ErrorResponse.error = 'Please enter a valid NIT Hamirpur email';
         return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
     }
       // Check if user is already present

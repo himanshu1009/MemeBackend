@@ -55,7 +55,7 @@ class CrudRepository {
 
     async getAll(query={}) {
         try {
-            const response = await this.model.find(query);
+            const response = await this.model.find(query).sort({createdAt: -1});
             return response;
         } catch (error) {
             throw new AppError(

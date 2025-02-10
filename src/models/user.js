@@ -1,17 +1,14 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const pg = require('random-profile-generator')
-const AvatarGenerator = require('random-avatar-generator')
-const generator = new AvatarGenerator.AvatarGenerator();
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        default: pg.name()
+        
     },
     avatar: {
         type: String,
-        default: generator.generateRandomAvatar()
+        required: true,
     },
     email: {
         type: String,

@@ -36,7 +36,7 @@ async function getAllPosts() {
 }
 async function getPostById(id) {
     try {
-        const post = await PostRepo.getPostById(id);
+        const post = await PostRepo.get(id);
         console.log(post);
         
         const {avatar, name} = await UserRepo.get(post.User);
