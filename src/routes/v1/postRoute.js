@@ -11,5 +11,6 @@ router.put('/update/:id',validateAuthRequest.checkAuth,PostController.updatePost
 router.delete('/delete/:id',validateAuthRequest.checkAuth,PostController.deletePost);
 router.post('/upvote/:id',validateAuthRequest.checkAuth,PostController.UpvotePost);
 router.post('/comment/:id',validateAuthRequest.checkAuth,PostController.addComment);
+router.get('/comments/get/:id',PostController.getComments);
 
 module.exports=router;

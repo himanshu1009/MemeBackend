@@ -24,7 +24,7 @@ async function getAllPosts() {
         const posts = await PostRepo.getAll();
         const updatePost = await Promise.all(posts.map(async (post) => {
             const {name, avatar} = await UserRepo.get(post.User);            
-            return {...post._doc, User: {name, avatar}};
+            return {...post._doc, User: {name, avatar,id:post.User}};
         }));
         return updatePost;
     } catch (error) {
@@ -40,7 +40,7 @@ async function getPostById(id) {
         console.log(post);
         
         const {avatar, name} = await UserRepo.get(post.User);
-        return {...post._doc, User: {name, avatar}};
+        return {...post._doc, User: {name, avatar,id:post.User}};
     } catch (error) {
         throw new AppError(
             "Not able to get the resource",
@@ -70,10 +70,26 @@ async function deletePost(id) {
         );
     }
 }
+async function getComments (id) {
+    try {
+        const post = await PostRepo.get(id);
+        const commentsWithUserDetails = await Promise.all(post.Comments.map(async (comment) => {
+            const {name, avatar} = await UserRepo.get(comment.User);
+            return {...comment._doc, User: {name, avatar}};
+        }));
+        return commentsWithUserDetails;
+    } catch (error) {
+        throw new AppError(
+            "Not able to get the resource",
+            StatusCodes.INTERNAL_SERVER_ERROR
+        );
+    }
+}
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     updatePost,
-    deletePost  
+    deletePost ,
+    getComments 
 }

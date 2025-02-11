@@ -73,7 +73,7 @@ const deletePost = async (req, res) => {
         if (!existingPost) {
             throw new AppError("Post not found", StatusCodes.NOT_FOUND);
         }
-        if (existingPost.User.toString() !== req.user.userId.toString()) {
+        if (existingPost.User.id.toString() !== req.user.userId.toString()) {
             throw new AppError("You are not authorized to delete this post", StatusCodes.UNAUTHORIZED);
         }
         await Postservice.deletePost(req.params.id);
@@ -109,13 +109,24 @@ const UpvotePost = async (req, res) => {
 }
 const addComment = async (req, res) => {
     try {
-        const post = await Postservice.getPostById(req.params.id);
+        const post = await postRepo.get(req.params.id);
         if (!post) {
             throw new AppError("Post not found", StatusCodes.NOT_FOUND);
         }
         post.Comments.push({ Description: req.body.Description, User: req.user.userId });
         await post.save();
         SuccessResponse.data = post;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    } catch (error) {
+        console.log(error.message);
+        ErrorResponse.error = error.message;
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    }
+}
+const getComments = async (req, res) => {
+    try {
+        const Comments= await Postservice.getComments(req.params.id);
+        SuccessResponse.data = Comments;
         return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
         console.log(error.message);
@@ -131,5 +142,6 @@ module.exports = {
     updatePost,
     deletePost,
     UpvotePost,
-    addComment
+    addComment,
+    getComments
 }

@@ -113,8 +113,8 @@ const resetPassword = async (req, res) => {
             ErrorResponse.error = new AppError('Please enter a valid NIT Hamirpur email', StatusCodes.BAD_REQUEST);
             return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
         }
-        if(!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)){
-            ErrorResponse.error = new AppError('Password must contain at least 8 characters, including at least 1 letter and 1 number', StatusCodes.BAD_REQUEST);
+        if(!password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/)){
+            ErrorResponse.error = new AppError('Password must contain at least 8 characters,including at least one Speacial , including at least 1 letter and 1 number', StatusCodes.BAD_REQUEST);
             return res.status(StatusCodes.BAD_REQUEST).json(ErrorResponse);
         }
         const existingUser = await signUpRepository.findByEmail(email);
