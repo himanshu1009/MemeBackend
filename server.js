@@ -2,8 +2,8 @@ const dotenv=require('dotenv');
 dotenv.config();
 const cors=require('cors');
 const express = require('express')
-const apiroutes=require('./routes')
-const {ServerConfig,dbConfig}=require('./config');
+const apiroutes=require('./src/routes');
+const {ServerConfig,dbConfig}=require('./src/config');
 const app = express();
 const mongoose = require('mongoose');
 
