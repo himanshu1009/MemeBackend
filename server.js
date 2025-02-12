@@ -8,7 +8,11 @@ const app = express();
 const mongoose = require('mongoose');
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
+}));app.options('*', cors());
 // Connect to MongoDB
 mongoose.connect(dbConfig.MONGODB_URI, dbConfig.options)
     .then(() => console.log('MongoDB connected successfully'))
