@@ -22,7 +22,7 @@ const createPost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
     try {
-        const posts = await Postservice.getAllPosts();
+        const posts = await Postservice.getAllPosts(req.query);
         SuccessResponse.data = posts;
         return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {

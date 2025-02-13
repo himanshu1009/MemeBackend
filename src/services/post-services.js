@@ -19,9 +19,12 @@ async function createPost(data) {
     }
 }
 
-async function getAllPosts() {
+async function getAllPosts(query) {
     try {
-        const posts = await PostRepo.getAll();
+        query = query || {};
+        query.limit = query.limit || 10;
+        query.page = query.page || 1;
+        const posts = await PostRepo.getAllposts(query);
         const updatePost = await Promise.all(posts.map(async (post) => {
             const {name, avatar} = await UserRepo.get(post.User);            
             return {...post._doc, User: {name, avatar,id:post.User}};
