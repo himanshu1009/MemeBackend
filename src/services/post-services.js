@@ -27,7 +27,7 @@ async function getAllPosts(query) {
         const posts = await PostRepo.getAllposts(query);
         const updatePost = await Promise.all(posts.map(async (post) => {
             const {name, avatar} = await UserRepo.get(post.User);            
-            return {...post._doc, User: {name, avatar,id:post.User}};
+            return {...post, User: {name, avatar,id:post.User}};
         }));
         return updatePost;
     } catch (error) {
